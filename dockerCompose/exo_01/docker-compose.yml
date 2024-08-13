@@ -1,0 +1,33 @@
+services:
+  laravel:
+    build: ./laravel
+    ports:
+      - "8000:8000"
+    depends_on:
+      - bd
+    networks:
+      - laravel/mysql
+
+  bd:
+    build: ./bd/
+    ports:
+      - "3307:3306"
+    # expose:
+    #   - 3306
+    env_file:
+      - ./bd/.env
+    networks:
+      - laravel/mysql
+    
+  vue:
+    build: ./vue/
+    ports:
+      - "5173:5173"
+    depends_on:
+      - laravel
+    networks:
+      - laravel/mysql
+
+networks:
+  laravel/mysql:
+    driver: bridge
